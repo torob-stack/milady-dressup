@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@547&display=swap" rel="stylesheet" />
 </head>
 
@@ -19,23 +18,12 @@
     <div class="layout-background"></div>
     <div class="layout intro-layout">
       <div class="intro-nav">
-        <div class="pretty-nav">
-        <p class="nav-label">directory</p>
-        <ul class="nav-links">
-          <li><a href="#">Homepage</a></li>
-          <li><a href="#">About Me ♥</a></li>
-          <li><a href="#">Milady Bon Bon Mint</a></li>
+        <p><strong>Navigation</strong></p>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Characters</a></li>
+          <li><a href="#">Journal</a></li>
         </ul>
-
-        <p class="nav-label">socials</p>
-        <ul class="nav-links">
-          <li><a href="#">Twitter</a></li>
-        </ul>
-
-        <div class="nav-badge">
-          <img src="iamges/cute.png" alt="badge" />
-        </div>
-      </div>
       </div>
 
       <div class="intro-center">
@@ -47,12 +35,12 @@
       </div>
 
       <div class="intro-extra">
-      <p><strong>Milady Bon Bon</strong></p>
-      <div class="rotating-image-box">
-        <img id="rotatingImage" src="bonbon/1.gif" alt="cute rotating image" />
+        <p><strong>What's New</strong></p>
+        <ul>
+          <li>🌟 New outfit added!</li>
+          <li>💬 Guestbook now open</li>
+        </ul>
       </div>
-    </div>
-
     </div>
   </div>
 
@@ -61,26 +49,7 @@
     <div class="layout-background"></div>
     <div class="layout">
       <div class="left-column">
-        💬 Chatbox 
-      <div class="chatbox-wrapper">
-        <script
-          id="cid0020000413053054595"
-          data-cfasync="false"
-          async
-          src="https://st.chatango.com/js/gz/emb.js"
-          style="width: 100%; height: 270px;">
-          {"handle":"nadiasguestbook","arch":"js","styles":{"a":"fee6e2","c":"000000","d":"000000","f":0,"k":"fee6e2","l":"fee6e2","m":"fee6e2","p":"10","q":"fee6e2","t":0,"usricon":0,"surl":0,"allowpm":0,"cnrs":"1","fwtickm":1}}
-        </script>
-      </div>
-      <div class="scroll-gallery">
-      <div class="scroll-track">
-        <img src="images/3cats.jpg" alt="sticker" />
-        <img src="images/6cats.jpg" alt="sticker" />
-        <img src="images/img3.png" alt="sticker" />
-        <!-- Add as many as you like -->
-      </div>
-      </div>
-
+        <!-- Left content (optional) -->
       </div>
 
       <div class="center-column">
@@ -98,7 +67,7 @@
                   <div class="character-area">
                     <div class="character-wrapper">
                       <div class="character-display" id="characterDisplay">
-                        <img src="images/model4.png" class="character-layer base-character" alt="Milady BonBon" />
+                        <img src="model4.png" class="character-layer base-character" alt="Milady BonBon" />
                         <div class="highlight-overlay" id="highlightOverlay"></div>
                       </div>
                     </div>
@@ -127,50 +96,24 @@
         </div>
       </div>
 
-      <!--<div class="right-column">
-        Right content (optional)
-      </div> -->
-    </div>
-  </div>
-  <!-- 🌸 EXTRA CONTENT SECTION -->
-  <!-- 🌸 FIXED EXTRA CONTENT SECTION -->
-<div class="column-block">
-  <div class="layout-background"></div>
-  <div class="layout extra-layout">
-    <div class="left-column">
-      <div class="extra-box">
-        <h3>Draw Something Cute 🦋</h3>
-        <div class="drawing-area">
-        <div class="drawing-controls">
-          <label>Color:
-            <input type="color" id="brushColor" value="#e49cb3" />
-          </label>
-          <label>Size:
-            <input type="range" id="brushSize" min="1" max="10" value="2" />
-          </label>
-          <button id="clearCanvas">🗑️ Clear</button>
-        </div>
-
-        <div id="p5sketch"></div>
-
-        <button id="saveSketch">Save & Send</button>
-      </div>
-
-      </div>
-    </div>
-
-    <div class="center-column">
-      <div class="extra-box">
-        <h3>Extra Column</h3>
-        <p>Add anything here — gallery, form, message, etc!</p>
+      <div class="right-column">
+        <!-- Right content (optional) -->
       </div>
     </div>
   </div>
-</div>
 
-
-
-  
+  <!-- 💬 Chatbox 
+  <div class="chatbox-wrapper">
+    <button class="chat-toggle" onclick="toggleChat()">💬 Chat</button>
+    <script
+      id="cid0020000413053054595"
+      data-cfasync="false"
+      async
+      src="https://st.chatango.com/js/gz/emb.js"
+      style="width: 260px; height: 320px;">
+      {"handle":"nadiasguestbook","arch":"js","styles":{"a":"fee6e2","c":"000000","d":"000000","f":0,"k":"fee6e2","l":"fee6e2","m":"fee6e2","p":"10","q":"fee6e2","t":0,"usricon":0,"surl":0,"allowpm":0,"cnrs":"1","fwtickm":1}}
+    </script>
+  </div> -->
 
   <script src="script.js"></script>
 </body>

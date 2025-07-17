@@ -1,59 +1,658 @@
+/* Reset + Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: sans-serif;
-  text-align: center;
-  background: #fff;
-  color: #a261ba;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 30px;
-}
-
-.character-area {
-  position: relative;
-  width: 200px;
-  height: 400px;
-}
-
-.character-area img {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-
-.clothing-area {
+  font-family: 'Fredoka', sans-serif;
+  background-color: #fff;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+  background-size: cover;
+}
+
+/* Layout System */
+.layout-wrapper,
+.intro-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.column-block {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 1; /* Ensure content is above lace */
+  width: 1470px; /* or the same width your content uses */
+  margin: 0 auto;
+  position: relative;
+}
+
+
+/* Lace decorations positioned around the centered 1440px layout */
+.lace-left,
+.lace-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 46px; /* Match the actual image width */
+  background-repeat: repeat-y;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 2; /* Behind the main layout */
+}
+
+.lace-left {
+  left: calc(50% - 758px - 20px);
+  background-image: url('images/laceleft.png');
+}
+
+.lace-right {
+  left: calc(50% + 758px - 20px); /* match same distance from center as left */
+  background-image: url('images/laceright.png');
+}
+
+
+
+
+
+.column-block + .column-block {
+  margin-top: 15px;
+}
+
+
+.layout-background {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: url('images/smallcheck.png') repeat;
+  background-size: 20px;
+  z-index: 0;
+}
+
+.layout {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.intro-layout {
+  display: flex;
+  justify-content: center; /* Fixes the big space */
+  gap: 20px;
+  width: 100%;
+  max-width: 1140px; /* exactly total of columns + gaps */
+  margin: 0 auto;
+}
+
+.extra-box {
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: inset 0 0 0 1px #fff, inset 0 0 0 2px #e5e5e5;
+  border-radius: 6px;
+  padding: 20px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14px;
+  color: #5c3d30;
+}
+
+.extra-layout .left-column,
+.extra-layout .center-column {
+  flex: 1;
+}
+
+
+/* Shared Columns */
+.left-column,
+.right-column,
+.center-column,
+.intro-nav,
+.intro-center {
+  position: relative;
+  z-index: 1;
+  background: url('images/ginghamS.png') repeat center center;
+  background-size: cover;
+  border: 1px solid #f2f2f2;
+  box-shadow: inset 0 0 0 1px #fff, inset 0 0 0 2px rgba(0, 0, 0, 0.04);
+  border-radius: 0px;
+  padding: 20px;
+  min-height: 200px;
+}
+
+.intro-extra {
+  position: relative;
+  z-index: 1;
+  background-color: #ffffff;
+  background-size: cover;
+  border: 1px solid #f2f2f2;
+  box-shadow: inset 0 0 0 1px #fff, inset 0 0 0 2px rgba(0, 0, 0, 0.04);
+  border-radius: 0px;
+  padding: 20px;
+  min-height: 200px;
+}
+
+/* Custom Intro Column Sizes */
+.intro-nav,
+.intro-extra {
+  flex: 0 0 300px;
+}
+
+.intro-center {
+  flex: 0 0 800px; /* now you can increase this freely */
+}
+
+.intro-box {
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: inset 0 0 0 1px #fff, inset 0 0 0 2px #e5e5e5;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+/* Main Layout Column Sizes */
+.left-column {
+  flex: 0 0 300px;
+  min-height: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* center horizontally */
+  justify-content: flex-start; /* align top */
+}
+
+
+
+/* Optionally remove or comment out .right-column if unused */
+.right-column {
+  display: none;
+}
+
+.center-column {
+  flex: 1; /* formerly 1000px */
+  max-width: unset;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.clothing {
-  width: 80px;
-  cursor: pointer;
-  border: 2px dashed #ccc;
+
+
+
+
+/* Game Frame */
+.frame-wrapper {
+  background: url('images/Untitled_Artwork.png') no-repeat center center;
+  background-size: 1000px 667px;
+  width: 1000px;
+  height: 667px;
+  aspect-ratio: 4 / 3;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.frame-inner {
+  width: 880px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 100px;
+}
+
+.frame-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.frame-left {
+  flex: 0 1 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frame-right {
+  flex: 0 1 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Game Content */
+.game-container {
+  max-width: 80%;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+  color: #5c3d30;
+  font-size: 2.2em;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.instructions {
+  background: #fff8f1;
+  border: 2px solid #e49cb3;
+  border-radius: 12px;
   padding: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #5c3d30;
+  font-size: 14px;
+  max-width: 95%;
 }
 
-.buttons {
-  margin-top: 40px;
+.character-area {
+  width: 200px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-button {
-  background: none;
-  border: 2px solid #a261ba;
-  padding: 10px 20px;
-  margin: 5px;
+.character-display {
+  position: relative;
+  width: 358px;
+  height: 537px;
+  z-index: 1;
+}
+
+.character-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.clothing-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.highlight-overlay {
+  position: absolute;
+  top: 5%;
+  right: 15%;
+  width: 70%;
+  height: 80%;
+  background-color: rgba(199, 231, 194, 0.2);
+  border: 2px dashed #c7e7c2;
+  border-radius: 10px;
+  padding-top: 100px;
+  display: none;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Clothing Panel */
+.clothing-panel {
+  width: 250px;
+  min-height: 300px;
+}
+
+.clothing-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tab-btn {
+  background: #fff8f1;
+  border: 2px solid #e49cb3;
+  border-radius: 999px;
+  padding: 6px 14px;
+  margin: 0 4px;
+  font-size: 14px;
+  font-family: 'Fredoka', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: #e49cb3;
+  color: white;
+  border-color: #e49cb3;
+}
+
+.clothing-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.clothing-item {
+  width: 90px;
+  height: 90px;
+  border: 2px solid #e49cb3;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: grab;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.clothing-item:hover {
+  border-color: #d38aa0;
+  transform: scale(1.02);
+}
+
+.clothing-item.equipped {
+  border-color: #c7e7c2;
+  background: #f0fff4;
+  box-shadow: 0 0 10px rgba(199, 231, 194, 0.5);
+}
+
+.clothing-item.equipped::after {
+  content: "✓";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #c7e7c2;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.clothing-item.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.clothing-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* Controls */
+.controls {
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 100;
+}
+
+.btn {
+  background: #f8cdd6;
+  color: #5c3d30;
+  border: 2px solid #e49cb3;
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 5px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  background: #e49cb3;
+  color: white;
+}
+
+/* Chat */
+.chatbox-wrapper {
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
+  background: #ffeef5; /* matches your directory box bg */
+  border: 1px solid #ffccdd;
+  border-radius: 0px;
+  box-shadow: inset 0 0 0 1px #fff, inset 0 0 0 2px #f2cbd9;
+  padding: 10px;
+}
+
+.chatbox-wrapper,
+.scroll-gallery {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+.chat-toggle {
+  display: block;
+  margin-bottom: 10px;
+  background: #fff0f8;
+  border: 2px dashed #ff99c8;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.clothing.selected {
-  outline: 3px solid #a261ba;
-  background-color: #f0e0ff;
+.chat-content.hidden {
+  display: none;
+}
+
+
+.hidden {
+  display: none !important;
+}
+
+.pretty-nav {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14px;
+  padding: 10px;
+  background: #fff0f8;
+  border: 1px solid #ffddee;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+
+.pretty-nav .nav-label {
+  font-style: italic;
+  font-size: 13px;
+  color: #a5748a;
+  margin: 8px 0 4px 4px;
+  text-transform: lowercase;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li {
+  border-bottom: 1px dotted #f5b5d4;
+  padding: 6px 4px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #cc3366;
+  font-weight: 500;
+  display: inline-block;
+  padding-left: 22px;
+  background: url('icon-pink.gif') no-repeat left center; /* Add your cute icon here */
+  background-size: 16px;
+}
+
+.nav-links li a:hover {
+  color: #ff6699;
+}
+
+.nav-badge {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.nav-badge img {
+  max-width: 90%;
+  border: 1px solid #ffccdd;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+.new {
+  font-size: 10px;
+  color: #e77ca3;
+  margin-left: 5px;
+  font-family: cursive;
+}
+
+.scroll-gallery {
+  width: 100%;
+  max-width: 260px;
+  margin: 10px auto 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding: 6px;
+  background: #ffeef5;
+  border: 1px solid #ffccdd;
+  border-radius: 0px;
+  box-shadow: inset 0 0 0 1px #fff, inset 0 0 0 2px #f2cbd9;
+}
+
+
+
+.scroll-track {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.scroll-track img {
+  height: 60px;
+  border-radius: 6px;
+  border: 1px solid #ffccd6;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+  object-fit: contain;
+}
+
+.scroll-track img:hover {
+  transform: scale(1.05);
+}
+
+/* 🌸 Pretty Scrollbar Styling for WebKit */
+.scroll-gallery::-webkit-scrollbar {
+  height: 8px; /* smaller and sleeker */
+}
+
+.scroll-gallery::-webkit-scrollbar-track {
+  background: #ffeaf5;
+  border-radius: 10px;
+}
+
+.scroll-gallery::-webkit-scrollbar-thumb {
+  background-color: #e49cb3;
+  border-radius: 10px;
+  border: 1px solid #fff0f8;
+}
+
+.scroll-gallery::-webkit-scrollbar-thumb:hover {
+  background-color: #d77ba2;
+}
+
+.rotating-image-box {
+  width: 100%;
+  height: auto;
+  padding: 10px 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.rotating-image-box img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.drawing-area {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#p5sketch canvas {
+  height: 200px !important;
+  border: 2px dashed #ffccd6;
   border-radius: 8px;
+  background: #fff0f8;
+  box-shadow: inset 0 0 4px rgba(255, 182, 217, 0.3);
+}
+
+#saveSketch {
+  margin-top: 6px;
+  background: #e49cb3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+
+
+@media (max-width: 768px) {
+  .game-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chatbox-wrapper {
+    display: none;
+  }
+
+  .character-area,
+  .clothing-panel {
+    width: 100%;
+    max-width: 300px;
+  }
 }

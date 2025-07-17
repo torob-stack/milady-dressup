@@ -1,0 +1,328 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Fredoka', sans-serif;
+    background: url('dots1.png') repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.frame-wrapper {
+    background: url('Untitled_Artwork.png') no-repeat center center;
+    background-size: contain;
+    width: 100%;
+    max-width: 1200px;
+    aspect-ratio: 16 / 10;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.frame-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px 150px;
+    box-sizing: border-box;
+}
+
+.frame-left {
+    flex: 0 0 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.frame-right {
+    flex: 0 0 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 90%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    text-align: center;
+    color: #5c3d30;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.instructions {
+    background: #fff8f1;
+    border: 2px solid #e49cb3;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #5c3d30;
+    font-size: 14px;
+    max-width: 90%;
+}
+
+.game-area {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px 40px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.character-area {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 200px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.character-display {
+    position: relative;
+    width: 400px;
+    height: 600px;
+}
+
+.character-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.clothing-layer {
+    z-index: 3;
+}
+
+.highlight-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(199, 231, 194, 0.2);
+    border: 2px dashed #c7e7c2;
+    border-radius: 10px;
+    pointer-events: none;
+    display: none;
+    z-index: 2;
+}
+
+.clothing-panel {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 250px;
+    min-height: 300px;
+}
+
+.clothing-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    background: #fff8f1;
+    border: 2px solid #e49cb3;
+    border-radius: 999px;
+    padding: 6px 14px;
+    margin: 0 4px;
+    font-size: 14px;
+    font-family: 'Fredoka', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: #e49cb3;
+    color: white;
+    border-color: #e49cb3;
+}
+
+.clothing-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.clothing-item {
+    width: 90px;
+    height: 90px;
+    border: 2px solid #e49cb3;
+    border-radius: 12px;
+    cursor: grab;
+    transition: all 0.2s ease;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.clothing-item:hover {
+    border-color: #d38aa0;
+    transform: scale(1.02);
+}
+
+.clothing-item.equipped {
+    border-color: #c7e7c2;
+    background: #f0fff4;
+    box-shadow: 0 0 10px rgba(199, 231, 194, 0.5);
+}
+
+.clothing-item.equipped::after {
+    content: "✓";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #c7e7c2;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.clothing-item.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.clothing-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn {
+    background: #f8cdd6;
+    color: #5c3d30;
+    border: 2px solid #e49cb3;
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+    background: #e49cb3;
+    color: white;
+}
+
+.chatbox-wrapper {
+  position: fixed;
+  left: 15px;
+  top: 25%;
+  z-index: 999;
+  padding: 12px;
+  background: #fff0f8;
+  border: 2px dashed #ff99c8;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+.game-scaler {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.chat-toggle {
+  position: fixed;
+  left: 15px;
+  bottom: 20px;
+  z-index: 1100;
+  background: #fff0f8;
+  border: 2px dashed #ff99c8;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .game-scaler {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-scaler {
+    padding: 12px;
+  }
+
+  .game-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chatbox-wrapper {
+    display: none;
+  }
+
+  .character-area,
+  .clothing-panel {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 500px) {
+  .game-scaler {
+    padding: 8px;
+  }
+}
