@@ -232,7 +232,7 @@ const rotatingImages = [
   "bonbon/10.gif",
   "bonbon/11.gif",
   "bonbon/12.gif",
-  // Add more image filenames here
+
 ];
 
 let currentImageIndex = 0;
