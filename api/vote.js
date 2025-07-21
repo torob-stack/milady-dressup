@@ -1,11 +1,10 @@
 // /api/vote.js
 import { createClient } from '@supabase/supabase-js';
 import { v4 as uuidv4 } from 'uuid';
-import { serialize } from 'cookie';
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 export default async function handler(req, res) {
@@ -14,51 +13,39 @@ export default async function handler(req, res) {
   }
 
   const { id: image_id } = req.body;
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
 
-  if (!image_id) {
-    return res.status(400).json({ error: 'Missing image ID' });
-  }
-
-  // Get client cookie or assign one
-  const cookies = req.headers.cookie || '';
-  const parsed = Object.fromEntries(cookies.split('; ').map(c => c.split('=')));
-  let cookie_id = parsed['milady_vote_id'];
-
+  // Create/get cookie ID
+  let cookie_id = req.cookies.voter_id;
   if (!cookie_id) {
     cookie_id = uuidv4();
-    res.setHeader('Set-Cookie', serialize('milady_vote_id', cookie_id, {
-      path: '/',
-      maxAge: 60 * 60 * 24 * 365, // 1 year
-    }));
+    res.setHeader('Set-Cookie', `voter_id=${cookie_id}; Path=/; Max-Age=31536000`);
   }
 
-  // Check if vote already exists
-  const { data: existingVote, error: checkError } = await supabase
+  // Prevent duplicate vote
+  const { data: existing } = await supabase
     .from('votes')
     .select('*')
     .eq('image_id', image_id)
     .eq('cookie_id', cookie_id)
-    .maybeSingle();
+    .single();
 
-  if (checkError) {
-    console.error(checkError);
-    return res.status(500).json({ error: 'Database read failed' });
-  }
-
-  if (existingVote) {
+  if (existing) {
     return res.status(200).json({ success: false, message: 'Already voted' });
   }
 
-  // Insert new vote
-  const { error: insertError } = await supabase.from('votes').insert({
-    image_id,
-    cookie_id,
-    ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || null,
-  });
+  // Record vote
+  const { error } = await supabase.from('votes').insert([
+    {
+      image_id,
+      cookie_id,
+      ip,
+    },
+  ]);
 
-  if (insertError) {
-    console.error(insertError);
-    return res.status(500).json({ error: 'Vote failed' });
+  if (error) {
+    console.error(error);
+    return res.status(500).json({ success: false });
   }
 
   return res.status(200).json({ success: true });

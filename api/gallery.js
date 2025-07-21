@@ -8,35 +8,31 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
   try {
-    // Get image submissions
-    const { data: images, error } = await supabase
+    const { data: submissions, error: submissionErr } = await supabase
       .from('submissions')
-      .select('image_id, url, timestamp');
+      .select('*');
 
-    if (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Failed to load images' });
-    }
+    if (submissionErr) throw submissionErr;
 
-    // Get vote counts
-    const { data: voteData, error: voteError } = await supabase
+    const { data: votes, error: voteErr } = await supabase
       .from('votes')
-      .select('image_id, count')
-      .group('image_id');
+      .select('image_id');
+
+    if (voteErr) throw voteErr;
 
     const voteMap = {};
-    voteData?.forEach(v => {
-      voteMap[v.image_id] = v.count;
+    votes.forEach(v => {
+      voteMap[v.image_id] = (voteMap[v.image_id] || 0) + 1;
     });
 
-    const enriched = images.map(img => ({
+    const images = submissions.map(img => ({
       id: img.image_id,
       url: img.url,
       timestamp: new Date(img.timestamp).getTime(),
-      votes: voteMap[img.image_id] || 0
+      votes: voteMap[img.image_id] || 0,
     }));
 
-    res.status(200).json({ images: enriched });
+    res.status(200).json({ images });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Could not fetch images' });

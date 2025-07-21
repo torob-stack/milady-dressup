@@ -591,7 +591,16 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
       body: JSON.stringify({ imageData }),
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      if (!res.ok) throw new Error(`Server returned ${res.status}`);
+      data = await res.json();
+    } catch (err) {
+      alert("⚠️ Submission failed. Please try again later.");
+      console.error("Submit error:", err);
+      return;
+    }
+
 
     if (res.ok) {
       alert('✅ Submission successful!');
