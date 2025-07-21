@@ -14,31 +14,28 @@
     <a href="index.html" class="back-btn">← Back to Paint</a>
   </div>
 
-  <script>
-    const cloudName = "dkoyavida";
-    const gallery = document.getElementById("gallery");
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  async function fetchImages() {
+    try {
+      const res = await axios.get('/api/gallery');
+      const images = res.data.images;
 
-    async function fetchImages() {
-      const url = `https://res.cloudinary.com/${cloudName}/image/list/v1.json`;
-
-      try {
-        // Cloudinary doesn't support open JSON listing by default
-        // So we simulate by loading known public uploads (use a folder if organized)
-        const response = await axios.get("https://res.cloudinary.com/dkoyavida/image/list/gallery.json");
-        response.data.resources.forEach((img) => {
-          const imgEl = document.createElement("img");
-          imgEl.src = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.png`;
-          imgEl.alt = "Milady Doodle";
-          imgEl.className = "gallery-img";
-          gallery.appendChild(imgEl);
-        });
-      } catch (err) {
-        console.error("Could not load images", err);
-        gallery.innerHTML = "<p>⚠️ Failed to load gallery. Try again later.</p>";
-      }
+      const gallery = document.getElementById('gallery');
+      images.forEach(img => {
+        const el = document.createElement('img');
+        el.src = img.url;
+        el.alt = img.alt;
+        el.className = 'gallery-img';
+        gallery.appendChild(el);
+      });
+    } catch (err) {
+      console.error('Could not load images', err);
     }
+  }
 
-    fetchImages();
-  </script>
+  fetchImages();
+</script>
+
 </body>
 </html>

@@ -29,17 +29,16 @@ p {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  padding: 20px;
 }
-
 .gallery-img {
   width: 100%;
   border-radius: 8px;
-  border: 2px solid #ffaacc;
-  transition: transform 0.3s ease;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
+
 
 .gallery-img:hover {
   transform: scale(1.05);
