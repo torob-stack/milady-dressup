@@ -578,29 +578,27 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   link.click();
 });
 
-document.getElementById("submitBtn").addEventListener("click", () => {
-  const dataURL = canvas.toDataURL("image/png");
+document.getElementById("submitBtn").addEventListener("click", async () => {
+  const imageDataUrl = canvas.toDataURL("image/png");
 
-  const formData = new FormData();
- formData.append("file", dataUrl);
-formData.append("upload_preset", "your_unsigned_preset");  // or use API key/secret
-formData.append("tags", "gallery"); // 💡 Add this line
-
-fetch("https://api.cloudinary.com/v1_1/dkoyavida/image/upload", {
-  method: "POST",
-  body: formData,
-})
-  .then(res => res.json())
-  .then(data => {
-    console.log("Upload success!", data);
-    alert("🎀 Drawing submitted successfully!\n\nURL:\n" + data.secure_url);
-    // Optionally: append the image to the page or save the URL somewhere
-  })
-  .catch(err => {
-    console.error("Upload error", err);
-    alert("⚠️ Submission failed. Please try again.");
+  const res = await fetch("/api/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ imageDataUrl }),
   });
+
+  const result = await res.json();
+
+  if (result.success) {
+    alert("🎉 Your drawing has been submitted!");
+  } else {
+    alert("❌ Submission failed.");
+    console.error(result);
+  }
 });
+
 
 
 
