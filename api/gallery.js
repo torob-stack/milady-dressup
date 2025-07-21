@@ -1,27 +1,21 @@
-// /pages/api/gallery.js
 // /api/gallery.js
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: 'dkoyavida',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 export default async function handler(req, res) {
-  const cloudName = 'dkoyavida';
-  const apiKey = 'your_api_key';
-  const apiSecret = 'your_api_secret';
-  const folder = 'milady_submissions';
-
-  const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
-
   try {
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloudName}/resources/image?prefix=${folder}/&max_results=50`,
-      {
-        headers: {
-          Authorization: `Basic ${auth}`,
-        },
-      }
-    );
+    const result = await cloudinary.search
+      .expression('folder:milady_submissions')
+      .sort_by('created_at', 'desc')
+      .max_results(30)
+      .execute();
 
-    if (!response.ok) throw new Error(`Cloudinary error: ${response.status}`);
-
-    const data = await response.json();
-    const images = data.resources.map(img => ({
+    const images = result.resources.map((img) => ({
       url: img.secure_url,
       alt: img.public_id,
     }));
@@ -32,4 +26,3 @@ export default async function handler(req, res) {
     res.status(500).json({ message: 'Could not fetch images' });
   }
 }
-
