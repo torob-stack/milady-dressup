@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Milady BonBon Gallery</title>
-  <link rel="stylesheet" href="gallery.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+  <link rel="stylesheet" href="gallery.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
   <div class="gallery-wrapper">
     <h1>🖼️ Milady BonBon Gallery</h1>
     <p>Here are the cutest doodles submitted by other Miladies!</p>
+    
     <div id="gallery" class="gallery-grid"></div>
+
+    <div class="gallery-error" style="display:none; color: red; margin-top: 1em;">
+      ⚠️ Failed to load gallery. Try again later.
+    </div>
+
     <a href="index.html" class="back-btn">← Back to Paint</a>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-  async function fetchImages() {
-    try {
-      const res = await axios.get('/api/gallery');
-      const images = res.data.images;
+  <script>
+    async function fetchImages() {
+      try {
+        const res = await axios.get('/api/gallery');
+        const images = res.data.images;
 
-      const gallery = document.getElementById('gallery');
-      images.forEach(img => {
-        const el = document.createElement('img');
-        el.src = img.url;
-        el.alt = img.alt;
-        el.className = 'gallery-img';
-        gallery.appendChild(el);
-      });
-    } catch (err) {
-      console.error('Could not load images', err);
+        const gallery = document.getElementById('gallery');
+        images.forEach(img => {
+          const el = document.createElement('img');
+          el.src = img.url;
+          el.alt = img.alt;
+          el.className = 'gallery-img';
+          gallery.appendChild(el);
+        });
+      } catch (err) {
+        console.error('Could not load images', err);
+        document.querySelector('.gallery-error').style.display = 'block';
+      }
     }
-  }
 
-  fetchImages();
-</script>
-
+    fetchImages();
+  </script>
 </body>
 </html>
