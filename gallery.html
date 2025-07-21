@@ -29,15 +29,17 @@
     let images = [];
 
     async function fetchImages() {
-      try {
-        const res = await axios.get('/api/gallery');
-        images = res.data.images;
-        sortGallery(); // initial render
-      } catch (err) {
-        console.error('Could not load images', err);
-        document.querySelector('.gallery-error').style.display = 'block';
-      }
-    }
+  try {
+    const res = await axios.get('/api/gallery');
+    images = res.data.images;
+    sortGallery();
+    renderImages(); // ✅ explicitly render after sorting
+  } catch (err) {
+    console.error('Could not load images', err);
+    document.querySelector('.gallery-error').style.display = 'block';
+  }
+}
+
 
     function renderImages() {
       const gallery = document.getElementById('gallery');
