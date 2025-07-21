@@ -580,35 +580,30 @@ document.getElementById("saveBtn").addEventListener("click", () => {
 
 document.getElementById('submitBtn').addEventListener('click', async () => {
   const canvas = document.getElementById('canvas');
-  if (!canvas) {
-    alert('Canvas not found!');
-    return;
-  }
-
   const imageData = canvas.toDataURL('image/png');
-
-  console.log("ImageData being sent:", imageData); // helpful debug
 
   try {
     const res = await fetch('/api/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageData })
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ imageData }),
     });
 
     const data = await res.json();
 
     if (res.ok) {
-      alert(`✅ Drawing submitted!\n${data.url}`);
+      alert('✅ Submission successful!');
     } else {
-      console.error('Error:', data);
-      alert(`❌ Submission failed: ${data.error || 'Unknown error'}`);
+      alert(`❌ Submission failed: ${data.error}`);
     }
   } catch (err) {
     console.error(err);
     alert('❌ Submission failed.');
   }
 });
+
 
 
 
