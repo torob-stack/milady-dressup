@@ -1,10 +1,24 @@
 // /api/submit.js
+import { v2 as cloudinary } from 'cloudinary';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
+cloudinary.config({
+  cloud_name: 'dkoyavida',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { imageData, author } = req.body;
+  const { imageData } = req.body;
 
   if (!imageData) {
     return res.status(400).json({ error: 'No image data provided' });
@@ -14,26 +28,11 @@ export default async function handler(req, res) {
     const base64Data = imageData.replace(/^data:image\/png;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
 
-    const cloudinary = require('cloudinary').v2;
-
-    cloudinary.config({
-      cloud_name: 'dkoyavida',
-      api_key: '892316969548234',
-      api_secret: 'FuveqGsTvv0GJy8M3vbHOU0_qiY',
-    });
-
-    const context = {
-      votes: '0',
-      timestamp: Date.now().toString(),
-      ...(author && { author }) // optional
-    };
-
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         {
           folder: 'milady_submissions',
           upload_preset: 'milady_drawings',
-          context,
         },
         (error, result) => {
           if (error) reject(error);
@@ -42,10 +41,22 @@ export default async function handler(req, res) {
       ).end(buffer);
     });
 
-    return res.status(200).json({ url: result.secure_url });
+    const public_id = result.public_id;
+    const timestamp = new Date().toISOString();
+    const url = result.secure_url;
+
+    // Save to Supabase
+    const { error: supabaseError } = await supabase.from('submissions').insert([
+      { image_id: public_id, timestamp, url }
+    ]);
+
+    if (supabaseError) {
+      console.error('Supabase insert error:', supabaseError);
+    }
+
+    return res.status(200).json({ url });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Upload failed' });
   }
 }
-
