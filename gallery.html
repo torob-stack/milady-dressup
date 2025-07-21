@@ -41,7 +41,7 @@
       }
     }
 
-    function renderImages() {
+function renderImages() {
   const gallery = document.getElementById('gallery');
   gallery.innerHTML = '';
 
@@ -90,8 +90,10 @@ function voteImage(id, button) {
       button.disabled = true;
     }
   });
-}
+      renderImages();
+    }
 
+    fetchImages();
   </script>
 </body>
 </html>
