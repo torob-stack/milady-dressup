@@ -1,0 +1,63 @@
+body {
+  font-family: "Verdana", sans-serif;
+  background: url('https://i.imgur.com/oH2ZrCx.png'); /* Milady damask tile */
+  margin: 0;
+  padding: 0;
+  color: #5c2a4a;
+}
+
+.gallery-wrapper {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff0f8;
+  border: 2px dashed #ff77aa;
+  padding: 1.5rem;
+  box-shadow: 0 0 8px #fcbad3;
+  border-radius: 12px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  font-size: 1rem;
+  color: #663355;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.gallery-img {
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid #ffaacc;
+  transition: transform 0.3s ease;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+  border-color: #ff77aa;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  background: #ff77aa;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #ff5599;
+}

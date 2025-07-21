@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milady BonBon Gallery</title>
+  <link rel="stylesheet" href="gallery.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+</head>
+<body>
+  <div class="gallery-wrapper">
+    <h1>🖼️ Milady BonBon Gallery</h1>
+    <p>Here are the cutest doodles submitted by other Miladies!</p>
+    <div id="gallery" class="gallery-grid"></div>
+    <a href="index.html" class="back-btn">← Back to Paint</a>
+  </div>
+
+  <script>
+    const cloudName = "dkoyavida";
+    const gallery = document.getElementById("gallery");
+
+    async function fetchImages() {
+      const url = `https://res.cloudinary.com/${cloudName}/image/list/v1.json`;
+
+      try {
+        // Cloudinary doesn't support open JSON listing by default
+        // So we simulate by loading known public uploads (use a folder if organized)
+        const response = await axios.get("https://res.cloudinary.com/dkoyavida/image/list/gallery.json");
+        response.data.resources.forEach((img) => {
+          const imgEl = document.createElement("img");
+          imgEl.src = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.png`;
+          imgEl.alt = "Milady Doodle";
+          imgEl.className = "gallery-img";
+          gallery.appendChild(imgEl);
+        });
+      } catch (err) {
+        console.error("Could not load images", err);
+        gallery.innerHTML = "<p>⚠️ Failed to load gallery. Try again later.</p>";
+      }
+    }
+
+    fetchImages();
+  </script>
+</body>
+</html>

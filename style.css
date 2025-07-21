@@ -117,6 +117,9 @@ body {
   flex: 1;
 }
 
+.column-block .extra-layout .centre-column {
+  flex 1;
+}
 
 /* Shared Columns */
 .left-column,
@@ -175,6 +178,7 @@ body {
   align-items: center;  /* center horizontally */
   justify-content: flex-start; /* align top */
 }
+
 
 
 
@@ -638,6 +642,108 @@ h1 {
   cursor: pointer;
 }
 
+.paint-tool {
+    font-family: sans-serif;
+    background: #fce4ec;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+.window-frame {
+    border: 2px solid #333;
+    width: 860px;
+    background: #fff;
+}
+.window-header {
+    display: flex;
+    justify-content: space-between;
+    background: #c0c0c0;
+    padding: 4px 8px;
+}
+.window-buttons {
+    display: flex;
+    gap: 4px;
+}
+.btn-paint {
+    background: #888;
+    padding: 2px 6px;
+    border: 1px solid #333;
+    cursor: default;
+}
+.paint-container {
+    display: flex;
+    
+}
+.toolbox {
+    display: flex;
+    flex-direction: column;
+    background: #d3d3d3;
+    padding: 4px;
+}
+.toolbox button {
+    margin: 2px 0;
+    font-size: 16px;
+}
+.canvas-section {
+    padding: 10px;
+}
+.controls {
+    margin-top: 8px;
+}
+
+#canvas {
+  border: 2px solid #888;
+  background: #fff;
+  display: block;
+  margin: 0 auto;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+
+.brush-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.button-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex: 1;
+}
+
+.button-controls button {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  font-size: 14px;
+  padding: 6px 14px;
+  border: 2px solid #d490b2;
+  background-color: #ffe6f0;
+  color: #4b2c36;
+  border-radius: 4px;
+  box-shadow: 1px 1px 0 #c26e99;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.button-controls button:hover {
+  background-color: #fdd0e4;
+  box-shadow: 2px 2px 0 #b85e8d;
+}
+
+.button-controls button:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0 #a4537d;
+}
 
 
 @media (max-width: 768px) {

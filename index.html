@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@547&display=swap" rel="stylesheet" />
 </head>
 
@@ -137,26 +138,48 @@
   <div class="layout-background"></div>
   <div class="layout extra-layout">
     <div class="left-column">
-      <div class="extra-box">
-        <h3>Draw Something Cute 🦋</h3>
-        <div class="drawing-area">
-        <div class="drawing-controls">
-          <label>Color:
-            <input type="color" id="brushColor" value="#e49cb3" />
-          </label>
-          <label>Size:
-            <input type="range" id="brushSize" min="1" max="10" value="2" />
-          </label>
-          <button id="clearCanvas">🗑️ Clear</button>
-        </div>
-
-        <div id="p5sketch"></div>
-
-        <button id="saveSketch">Save & Send</button>
+      <div class="paint-tool">
+      <div class="window-frame">
+      <div class="window-header">
+          <span class="title">Paint</span>
+          <div class="window-buttons">
+              <span class="btn-paint minimize">–</span>
+              <span class="btn-paint close">×</span>
+          </div>
       </div>
+      <div class="paint-container">
+          <div class="toolbox">
+              <button onclick="selectTool('pencil')" title="Pencil">✏️</button>
+              <button onclick="selectTool('brush')" title="Brush">🖌️</button>
+              <button onclick="selectTool('eraser')" title="Eraser">🩹</button>
+              <button onclick="selectTool('airbrush')" title="Airbrush">🌫️</button>
+              <button onclick="selectTool('text')" title="Text">🔤</button>
+              <button onclick="selectTool('line')" title="Line">📏</button>
+              <button onclick="selectTool('rect')" title="Rect">◻️</button>
+              <button onclick="selectTool('ellipse')" title="Ellipse">⚪</button>
+              <button onclick="selectTool('fill')" title="Fill Tool">🪣</button>
 
+              <button onclick="undo()">↩️</button>
+              <button onclick="clearCanvas()">🧽</button>
+          </div>
+          <div class="canvas-section">
+              <div id="canvas-container"><canvas id="canvas" width="800" height="600"></canvas></div>
+              <div class="control-row">
+              <div class="brush-controls">
+                  <label>Size:</label>
+                  <input type="range" id="brushSize" min="1" max="30" value="5" oninput="syncBrushSize(this.value)">
+                  <input type="color" id="colorPicker" value="#000000" onchange="changeColor(this.value)">
+              </div>
+              <div class="button-controls">
+                <button id="saveBtn">Save</button>
+                <button id="submitBtn">Submit</button>
+              </div>
+              </div>
+          </div>
       </div>
-    </div>
+  </div>
+  </div>
+  </div>
 
     <div class="center-column">
       <div class="extra-box">
