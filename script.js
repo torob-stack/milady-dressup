@@ -578,26 +578,38 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   link.click();
 });
 
-document.getElementById("submitBtn").addEventListener("click", async () => {
-  const imageDataUrl = canvas.toDataURL("image/png");
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const canvas = document.getElementById('canvas');
+  if (!canvas) {
+    alert('Canvas not found!');
+    return;
+  }
 
-  const res = await fetch("/api/submit", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ imageDataUrl }),
-  });
+  const imageData = canvas.toDataURL('image/png');
 
-  const result = await res.json();
+  console.log("ImageData being sent:", imageData); // helpful debug
 
-  if (result.success) {
-    alert("🎉 Your drawing has been submitted!");
-  } else {
-    alert("❌ Submission failed.");
-    console.error(result);
+  try {
+    const res = await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageData })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert(`✅ Drawing submitted!\n${data.url}`);
+    } else {
+      console.error('Error:', data);
+      alert(`❌ Submission failed: ${data.error || 'Unknown error'}`);
+    }
+  } catch (err) {
+    console.error(err);
+    alert('❌ Submission failed.');
   }
 });
+
 
 
 
