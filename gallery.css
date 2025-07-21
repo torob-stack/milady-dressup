@@ -65,3 +65,18 @@ p {
 .back-btn:hover {
   background: #ff5599;
 }
+
+.vote-btn {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border: none;
+  background: #ff77aa;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.vote-btn:hover {
+  background: #ff5599;
+}

@@ -10,7 +10,14 @@
   <div class="gallery-wrapper">
     <h1>🖼️ Milady BonBon Gallery</h1>
     <p>Here are the cutest doodles submitted by other Miladies!</p>
-    
+
+    <select id="sortSelect" onchange="sortGallery()">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="popular">Most Popular</option>
+      <option value="unpopular">Least Popular</option>
+    </select>
+
     <div id="gallery" class="gallery-grid"></div>
 
     <div class="gallery-error" style="display:none; color: red; margin-top: 1em;">
@@ -21,23 +28,86 @@
   </div>
 
   <script>
+    let images = [];
+
     async function fetchImages() {
       try {
         const res = await axios.get('/api/gallery');
-        const images = res.data.images;
-
-        const gallery = document.getElementById('gallery');
-        images.forEach(img => {
-          const el = document.createElement('img');
-          el.src = img.url;
-          el.alt = img.alt;
-          el.className = 'gallery-img';
-          gallery.appendChild(el);
-        });
+        images = res.data.images;
+        sortGallery(); // initial render
       } catch (err) {
         console.error('Could not load images', err);
         document.querySelector('.gallery-error').style.display = 'block';
       }
+    }
+
+    function renderImages() {
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = '';
+
+      const voted = JSON.parse(localStorage.getItem('votedImages') || '[]');
+
+      images.forEach(img => {
+        const container = document.createElement('div');
+        container.className = 'gallery-item';
+
+        const imageEl = document.createElement('img');
+        imageEl.src = img.url;
+        imageEl.alt = img.alt;
+        imageEl.className = 'gallery-img';
+
+        const voteBtn = document.createElement('button');
+        voteBtn.className = 'vote-btn';
+        voteBtn.innerText = `👍 ${img.votes}`;
+        voteBtn.disabled = voted.includes(img.id);
+        voteBtn.onclick = () => voteImage(img.id, voteBtn);
+
+        container.appendChild(imageEl);
+        container.appendChild(voteBtn);
+        gallery.appendChild(container);
+      });
+    }
+
+    function voteImage(id, button) {
+      const votedImages = JSON.parse(localStorage.getItem("votedImages") || "[]");
+      if (votedImages.includes(id)) {
+        alert("You’ve already voted!");
+        return;
+      }
+
+      fetch('/api/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const current = parseInt(button.innerText.split(" ")[1]);
+          button.innerText = `👍 ${current + 1}`;
+          button.disabled = true;
+          votedImages.push(id);
+          localStorage.setItem("votedImages", JSON.stringify(votedImages));
+        } else {
+          alert("Error submitting vote.");
+        }
+      })
+      .catch(() => alert("Error submitting vote."));
+    }
+
+    function sortGallery() {
+      const sort = document.getElementById('sortSelect').value;
+
+      images.sort((a, b) => {
+        switch (sort) {
+          case 'newest': return b.timestamp - a.timestamp;
+          case 'oldest': return a.timestamp - b.timestamp;
+          case 'popular': return (b.votes || 0) - (a.votes || 0);
+          case 'unpopular': return (a.votes || 0) - (b.votes || 0);
+        }
+      });
+
+      renderImages();
     }
 
     fetchImages();

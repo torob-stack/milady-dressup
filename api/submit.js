@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { imageData } = req.body;
+  const { imageData, author } = req.body;
 
   if (!imageData) {
     return res.status(400).json({ error: 'No image data provided' });
@@ -22,11 +22,18 @@ export default async function handler(req, res) {
       api_secret: 'FuveqGsTvv0GJy8M3vbHOU0_qiY',
     });
 
+    const context = {
+      votes: '0',
+      timestamp: Date.now().toString(),
+      ...(author && { author }) // optional
+    };
+
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         {
           folder: 'milady_submissions',
           upload_preset: 'milady_drawings',
+          context,
         },
         (error, result) => {
           if (error) reject(error);
@@ -41,3 +48,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Upload failed' });
   }
 }
+
