@@ -603,6 +603,7 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
 
 
 
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('saveSketch')?.addEventListener('click', () => {
     saveCanvas('milady_doodle', 'png');

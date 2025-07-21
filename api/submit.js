@@ -1,35 +1,39 @@
 // /api/submit.js
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const cloudName = 'dkoyavida';
-  const uploadPreset = 'ml_default'; // or a preset you've configured
-  const folder = 'milady_submissions';
+  const CLOUD_NAME = 'dkoyavida';
+  const UPLOAD_PRESET = 'milady_drawings';
+
+  const { imageData } = req.body;
+
+  if (!imageData) {
+    return res.status(400).json({ error: 'No image data provided' });
+  }
 
   try {
-    const { imageDataUrl } = req.body;
-
-    const formData = new FormData();
-    formData.append('file', imageDataUrl);
-    formData.append('upload_preset', uploadPreset);
-    formData.append('folder', folder);
-
-    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
       method: 'POST',
-      body: formData,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        file: imageData,
+        upload_preset: UPLOAD_PRESET
+      })
     });
 
     const data = await response.json();
 
-    if (data.secure_url) {
-      return res.status(200).json({ success: true, url: data.secure_url });
+    if (response.ok) {
+      return res.status(200).json({ message: 'Upload successful', url: data.secure_url });
     } else {
-      return res.status(500).json({ success: false, message: 'Upload failed', data });
+      console.error('Cloudinary Error:', data);
+      return res.status(500).json({ error: 'Upload failed', cloudinary: data });
     }
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ error: 'Server error' });
   }
 }
